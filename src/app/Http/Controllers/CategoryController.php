@@ -33,7 +33,7 @@ class CategoryController extends Controller
 
     public function destroy(Request $request)
     {
-        Category::find($request->category_id)->delete();
+        Category::find($request->id)->delete();
 
         return redirect('/categories')->with('message', 'カテゴリを削除しました');
     }

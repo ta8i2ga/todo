@@ -29,13 +29,12 @@
     <form class="create-form" action="/todos" method="post"><!--formルーティング-->
         @csrf
         <div class="create-form__item">
-            <input class="create-form__item-input"
-            type="text"
-            name="content"
-            value="{{ old('content') }}"
-            >
-            <select class="create-form__item-select">
+            <input class="create-form__item-input" type="text" name="content" value="{{ old('content') }}">
+            <select class="create-form__item-select" name="category_id">
                 <option value="">カテゴリ</option>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
             </select>
         </div>
         <div class="create-form__button">
@@ -45,11 +44,15 @@
     <div class="section__title">
         <h2>Todo検索</h2>
     </div>
-    <form class="search-form">
+    <form class="search-form" action="/todos/search" method="get">
+        @csrf
         <div class="search-form__item">
-            <input class="search-form__item-input" type="text">
-            <select class="search-form__item-select">
+            <input class="search-form__item-input" type="text" name="keyword" value="{{ old('keyword') }}">
+            <select class="search-form__item-select" name="category_id">
                 <option value="">カテゴリ</option>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
             </select>
         </div>
         <div class="search-form__button">
@@ -57,7 +60,7 @@
         </div>
     </form>
     <div class="todo-table">
-        <table class="todo-table__inner"><!--テーブル用意-->
+        <table class="todo-table__inner">
             <tr class="todo-table__row">
                 <th class="todo-table__header">
                     <span class="todo-table__header-span">Todo</span>
@@ -71,17 +74,14 @@
                         @method('patch')
                         @csrf
                         <div class="update-form__item">
-                            <input class="update-form__item-input"
-                            type="text"
-                            name="content"
-                            value="{{ $todo['content'] }}">
-                            <input type="hidden" name="id" value="{{ $todo['id'] }}"><!--test-->
+                            <input class="update-form__item-input" type='text' name="content" value="{{ $todo['content'] }}">
+                            <input type="hidden" name="id" value="{{ $todo['id'] }}">
                         </div>
                         <div class="update-form__item">
-                            <p class="update-form__item-p">Category 1</p>
+                            <p class="update-form__item-p">{{ $todo->category->name }}</p><!--悩んだ点-->
                         </div>
                         <div class="update-form__button">
-                            <button class="update-form__button-submit" type="submit">更新</button><!--更新ボタン-->
+                            <button class="update-form__button-submit" type="submit">更新</button>
                         </div>
                     </form>
                 </td>
@@ -90,10 +90,8 @@
                         @method('delete')
                         @csrf
                         <div class="delete-form__button">
-                            <input type="hidden"
-                            name="id"
-                            value="{{ $todo['id'] }}">
-                            <button class="delete-form__button-submit" type="submit">削除</button><!--削除ボタン-->
+                            <input type="hidden" name="id" value="{{ $todo['id'] }}">
+                            <button class="delete-form__button-submit" type="submit">削除</button>
                         </div>
                     </form>
                 </td>
