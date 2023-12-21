@@ -51,7 +51,7 @@
             <select class="search-form__item-select" name="category_id">
                 <option value="">カテゴリ</option>
                 @foreach($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                <option value="{{ $category->id }}">{{ $category['name'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -78,7 +78,7 @@
                             <input type="hidden" name="id" value="{{ $todo['id'] }}">
                         </div>
                         <div class="update-form__item">
-                            <p class="update-form__item-p">{{ $todo->category->name }}</p><!--悩んだ点-->
+                            <p class="update-form__item-p">{{ $todo['category']['name'] }}</p><!--悩んだ点-->
                         </div>
                         <div class="update-form__button">
                             <button class="update-form__button-submit" type="submit">更新</button>
